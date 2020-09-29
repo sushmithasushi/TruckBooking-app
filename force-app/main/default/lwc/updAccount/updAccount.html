@@ -1,0 +1,14 @@
+<template>
+    <lightning-card>
+    <lightning-record-edit-form record-id={recordId} object-api-name={objectApiName}>
+       <lightning-output-field field-name="AccountId" value={sai}></lightning-output-field>
+   </lightning-record-edit-form>  
+    <lightning-record-edit-form object-api-name="Account" record-id={acc} onsuccess={handleSuccess} onerror={handleError}>      
+        <lightning-input-field field-name="Name"></lightning-input-field>
+        <lightning-input-field field-name="Site"></lightning-input-field>
+        <lightning-input-field field-name="Phone"></lightning-input-field>
+        <lightning-input-field field-name="	Type"></lightning-input-field><center>
+        <lightning-button class="slds-m-top_small" label="Submit" variant="brand" type="submit" icon-name="standard:record_create" name="save"></lightning-button>&nbsp;&nbsp;&nbsp;
+       <lightning-button label="Cancel" onclick={cancel1} icon-name="action:close"></lightning-button></center>
+   </lightning-record-edit-form></lightning-card>
+</template>

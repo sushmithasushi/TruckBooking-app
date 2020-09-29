@@ -1,0 +1,173 @@
+<template>
+  <template if:true={cc}>
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+             <div class="slds-modal__content slds-p-around_medium">
+                <div class="slds-p-bottom_large slds-p-left_large" style="width:500px">
+                  <center>
+                    <lightning-card title="Booking Status Bar Chart" icon-name="utility:chart">
+   
+                    
+                    <template if:true={chartConfiguration}>
+                      <c-chart chart-config={chartConfiguration}></c-chart>
+                  </template></lightning-card>
+                  <lightning-button
+                  class="slds-m-top_small"
+                  label="Close Chart" variant="destructive"
+                   icon-name="utility:close" onclick={chart}>
+                 </lightning-button>
+                  
+                      </center>
+             
+    </div></div></div></section>
+</template>
+<template if:true={c1}>
+   <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+       <div class="slds-modal__container">
+            <div class="slds-modal__content slds-p-around_medium">
+               <div class="slds-p-bottom_large slds-p-left_large" style="width:500px">
+                 <center>
+                   <lightning-card title="Data Export Status" icon-name="utility:chart">
+  
+                   
+                   <template if:true={chartConfig}>
+                     <c-chart chart-config={chartConfig}></c-chart>
+                 </template></lightning-card>
+                 <lightning-button
+                 class="slds-m-top_small"
+                 label="Close Chart" variant="destructive"
+                  icon-name="utility:close" onclick={chart2}>
+                </lightning-button>
+                 
+                     </center>
+            
+   </div></div></div></section>
+</template>
+
+  
+  
+  <template if:true={m}>
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+             <div class="slds-modal__content slds-p-around_medium">
+                <div class="slds-p-bottom_large slds-p-left_large" style="width:500px"><center>
+                    <h2  class="slds-text-heading_medium slds-hyphenate">Edit the Details of </h2></br></br>
+                   
+                   <lightning-record-edit-form object-api-name="Booking__c" record-id={bookId} onsuccess={success} onerror={error}>
+                    <lightning-input-field field-name="Name"></lightning-input-field>     
+          <lightning-input-field field-name="Truck__c" value={truckId}></lightning-input-field>
+          <lightning-input-field field-name="Type__c" value={typ}></lightning-input-field>
+          <lightning-input-field field-name="Account__c" value={acc}></lightning-input-field>
+          <lightning-input-field field-name="City__c" value={c}></lightning-input-field>
+          <lightning-input-field field-name="From_City_places__c" value={fcp}>
+          </lightning-input-field>
+          <lightning-input-field field-name="To_city_places__c" value={tcp}>
+          </lightning-input-field>
+          <lightning-input-field field-name="From_City__c" value={fc}></lightning-input-field>
+          <lightning-input-field field-name="To_City__c" value={tc}>
+          </lightning-input-field>
+
+                   
+                    <lightning-button
+                    class="slds-m-top_small"
+                    label="Submit" variant="brand"
+                    type="submit" icon-name="standard:record_create" name="save">
+                   </lightning-button>&nbsp;&nbsp;&nbsp;
+                   <lightning-button label="Cancel" onclick={clear} icon-name="action:close"></lightning-button>
+               </lightning-record-edit-form>
+    </center>
+    </div></div></div></section>
+</template>
+      <center>
+         <div class="slds-p-around_medium lgc-bg-inverse">
+          <lightning-button
+          class="slds-m-top_small"
+          label="Booking Status Chart" variant="inverse"
+           icon-name="utility:chart" onclick={chart}>
+         </lightning-button>&nbsp;&nbsp;&nbsp;  <lightning-button
+         class="slds-m-top_small"
+         label="Data Export Chart" variant="inverse"
+          icon-name="utility:chart" onclick={chart2}>
+        </lightning-button>
+        </div>
+            <div class="backgroundInverse">
+  
+            <h1  class="slds-text-heading_medium slds-hyphenate">All Truck Bookings</h1>
+            </div></center>
+          <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-m-top_small">
+          <thead>
+             <tr class="slds-line-height_reset">
+                <th class="" scope="col">
+                   <div class="slds-truncate" title="Booking Number">Booking Number</div>
+                </th>
+               
+                <th class="" scope="col">
+                   <div class="slds-truncate" title="Account">Account Name</div>
+                </th>
+                <th class="" scope="col">
+                   <div class="slds-truncate" title="Truck">Truck Name</div>
+                </th>
+                
+                <th class="" scope="col">
+                   <div class="slds-truncate" title="Type">Type</div>
+                </th>
+               
+                 <th class="" scope="col">
+                  <div class="slds-truncate" title="City">City Name</div>
+               </th>
+               <th class="" scope="col">
+                <div class="slds-truncate" title="From">From</div>
+             </th>
+             <th class="" scope="col">
+              <div class="slds-truncate" title="To">To</div>
+           </th>
+           <th class="" scope="col">
+            <div class="slds-truncate" title="City">From City</div>
+         </th>
+         <th class="" scope="col">
+          <div class="slds-truncate" title="City">To City</div>
+       </th>
+      
+             </tr>
+          </thead>
+          
+          <tbody>   
+            <template for:each={b} for:item='e' for:index='x'>
+                <tr class="slds-hint-parent" key={e.Name}>
+                   <td>
+                      <div class="slds-truncate">{e.Name}</div>
+                   </td>
+                  
+                   <td>
+                      <div class="slds-truncate">
+                         {e.Account_Name__c} 
+                        
+                      </div>
+                   </td>
+                   <td>
+                      <div class="slds-truncate">
+                         {e.Truck_Name__c} 
+                        
+                      </div></td>
+                      <td><div class="slds-truncate">{e.Type__c} </div></td>
+                   <td><div class="slds-truncate">{e.City__c} </div></td>
+                   <td><div class="slds-truncate">{e.From_City_places__c}</div></td>
+                   <td><div class="slds-truncate">{e.To_city_places__c} </div></td>
+                   <td><div class="slds-truncate">{e.From_City__c} </div></td>
+                   <td><div class="slds-truncate">{e.To_City__c} </div></td>
+                   <td><div class="slds-truncate"><lightning-record-edit-form object-api-name="Booking__c" record-id={e.Id}>
+                     <lightning-output-field field-name="Data_Exported__c"></lightning-output-field> </lightning-record-edit-form></div></td>
+                   <td><lightning-button-menu alternative-text="Show menu">
+                    <lightning-menu-item icon="action:user" label="Assign to Driver" onclick={assign} value={x} ></lightning-menu-item>
+                    <lightning-menu-item  label="Edit" onclick={edit} value={x}></lightning-menu-item>
+                    <lightning-menu-item value={x} label="Delete" onclick={del}></lightning-menu-item>
+                    <lightning-menu-item value={x} label="Export Data" onclick={sendbook}></lightning-menu-item>
+                </lightning-button-menu></td>
+                </tr>  
+             </template>
+          </tbody>
+       </table>
+ 
+ 
+  
+</template>

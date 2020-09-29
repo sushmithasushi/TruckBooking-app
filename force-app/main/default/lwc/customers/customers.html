@@ -1,0 +1,116 @@
+<template>
+  <template if:true={s}>
+    <lightning-card>
+          <center>
+            <div class="backgroundInverse">
+
+            <h1  class="slds-text-heading_medium slds-hyphenate">Truck Booking App</h1>
+            </div><h2  class="slds-text-heading_small slds-hyphenate">Trucks Available for Booking</h2></center>
+       <template for:each={truck} for:item='s' for:index='x'>            
+        <lightning-record-view-form record-id={s.Id} object-api-name="Truck__c" key={s}>
+             <div class="slds-box"> 
+         <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-m-top_small">
+         <tr><td><div class="slds-truncate"><lightning-output-field field-name="Name"></lightning-output-field></div></td>
+         <td><div class="slds-truncate"><lightning-output-field field-name="Truck_Image__c"></lightning-output-field></div></td> 
+         <td><div class="slds-truncate"><lightning-output-field field-name="Maximum_Load__c"></lightning-output-field></div></td>
+         <td><div class="slds-truncate"><lightning-output-field field-name="Cost_per_Km__c"></lightning-output-field></div></td>
+         <td><div class="slds-truncate"><div class="backgroundInverse"><lightning-button label="Select" onclick={select}  value={x} icon-name="utility:check"></lightning-button></div></div></td>
+        
+         </tr>                                        
+                </table>
+                </div> 
+                </lightning-record-view-form>
+            </template>
+          </lightning-card>
+          </template>
+            
+            <center>
+            <template if:true={a}> <div class="backgroundInverse">
+        <lightning-button label="Back" icon-name="action:back" onclick={back}></lightning-button>  
+                &nbsp;&nbsp;&nbsp;
+   <lightning-button-stateful label-when-off="Move Within City" label-when-on="Within city is Selected" icon-name-when-off="utility:add" icon-name-when-on="utility:check" selected={inSelect} onclick={incity}></lightning-button-stateful>  
+      &nbsp;&nbsp;&nbsp;
+      <lightning-button-stateful label-when-off="Move Outside City"  label-when-on="Outside city is Selected" icon-name-when-off="utility:add" icon-name-when-on="utility:check" selected={outSelect} onclick={outcity}></lightning-button-stateful></div> 
+      <template if:true={inn}>
+        <div class="slds-modal__container">
+          <!-- modal header start -->
+          <header class="slds-modal__header">
+           
+             <h2  class="slds-text-heading_medium slds-hyphenate">Fill the Details</h2>
+          </header>
+          
+          <div class="slds-modal__content slds-p-around_large">
+            <div class="slds-p-bottom_large slds-p-left_large" >
+              <lightning-messages></lightning-messages>
+        <lightning-record-edit-form object-api-name="Booking__c" onsuccess={handleSuccess} onerror={handleError}>
+         
+          <lightning-input-field field-name="Truck__c" value={truckId}></lightning-input-field>
+          <lightning-input-field field-name="Type__c" value={t}></lightning-input-field>
+          <lightning-input-field field-name="Account__c"></lightning-input-field>
+          <lightning-input-field field-name="City__c"></lightning-input-field>
+          <lightning-input-field field-name="From_City_places__c">
+          </lightning-input-field>
+          <lightning-input-field field-name="To_city_places__c">
+          </lightning-input-field>
+          
+          
+          
+          <lightning-button
+          class="slds-m-top_small"
+          label="Submit" variant="brand"
+          type="submit" icon-name="standard:record_create" name="save">
+         </lightning-button>
+         <lightning-button label="Cancel" onclick={cancel1} icon-name="action:close"></lightning-button>
+     </lightning-record-edit-form>
+
+     </div></div></div>
+ 
+
+      </template> 
+      <template if:true={out}>
+        <div class="slds-modal__container">
+          <!-- modal header start -->
+          <header class="slds-modal__header">
+           
+             <h2  class="slds-text-heading_medium slds-hyphenate">Fill the Details</h2>
+          </header>
+          
+          <div class="slds-modal__content slds-p-around_large">
+            <div class="slds-p-bottom_large slds-p-left_large" >
+             <lightning-messages></lightning-messages>
+        <lightning-record-edit-form object-api-name="Booking__c" onsuccess={handleSuccess} onerror={handlerror}>
+          <lightning-input-field field-name="Truck__c" value={truckId}></lightning-input-field>
+          <lightning-input-field field-name="Type__c" value={t}></lightning-input-field>
+          <lightning-input-field field-name="Account__c"></lightning-input-field>
+          <lightning-input-field field-name="From_City__c"></lightning-input-field>
+          <lightning-input-field field-name="To_City__c">
+          </lightning-input-field>
+          <lightning-button
+          class="slds-m-top_small"
+          label="Submit" variant="brand"
+          type="submit" icon-name="standard:record_create" name="save">
+         </lightning-button>
+         <lightning-button label="Cancel" onclick={cancel2} icon-name="action:close"></lightning-button>
+     </lightning-record-edit-form>
+     </div></div></div>
+      </template>
+    </template></center>
+    <lightning-card>
+    <template if:true={l}>
+      <div class="slds-p-bottom_large slds-p-left_large" >
+        <lightning-record-edit-form object-api-name="Truck_Load__c" onsuccess={loadinfo} onerror={error}>
+          <lightning-input-field field-name="Booking__c" value={bookId}></lightning-input-field>
+          <lightning-input-field field-name="Number_of_Items__c" ></lightning-input-field>
+          <lightning-input-field field-name="Load_Items__c" ></lightning-input-field>
+          <lightning-input-field field-name="Approximate_weight__c"></lightning-input-field>
+          <center>
+          <lightning-button
+          class="slds-m-top_small"
+          label="Confirm Booking" variant="success"
+          type="submit" icon-name="standard:endorsement" icon-position="right" name="save">
+         </lightning-button>&nbsp;&nbsp;&nbsp;&nbsp;
+         <lightning-button label="Cancel" onclick={clear} icon-position="right" variant="destructive" icon-name="action:close"></lightning-button></center>
+     </lightning-record-edit-form>
+     </div>
+    </template></lightning-card>
+   </template>

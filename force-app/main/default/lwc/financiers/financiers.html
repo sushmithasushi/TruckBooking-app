@@ -1,0 +1,117 @@
+<template>
+    <template if:true={m}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                 <div class="slds-modal__content slds-p-around_medium">
+                    <div class="slds-p-bottom_large slds-p-left_large" style="width:500px"><center>
+                        <h2  class="slds-text-heading_medium slds-hyphenate">Edit the Details of </h2></br></br>
+                       
+                       <lightning-record-edit-form object-api-name="Payment__c" record-id={payId} onsuccess={success} onerror={error}>
+                        <lightning-input-field field-name="Name"></lightning-input-field>     
+              <lightning-input-field field-name="Booking__c" value={bookId}></lightning-input-field>
+              <lightning-input-field field-name="Mode_of_Payment__c" value={mop}></lightning-input-field>
+              <lightning-input-field field-name="Payment_Received__c" value={pr}></lightning-input-field>                   
+                        <lightning-button
+                        class="slds-m-top_small"
+                        label="Submit" variant="brand"
+                        type="submit" icon-name="standard:record_create" name="save">
+                       </lightning-button>&nbsp;&nbsp;&nbsp;
+                       <lightning-button label="Cancel" onclick={clear} icon-name="action:close"></lightning-button>
+                   </lightning-record-edit-form>
+        </center>
+        </div></div></div></section>
+    </template>
+    
+    <lightning-card>
+        <center>
+          <div class="backgroundInverse">
+          <h1  class="slds-text-heading_medium slds-hyphenate">All Finance Details</h1>
+          </div></center>
+     <template for:each={f} for:item='s' for:index='x'>            
+      <lightning-record-view-form record-id={s.Id} object-api-name="Payment__c" key={s}>
+           <div class="slds-box"> 
+       <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-m-top_small">
+       <tr><td><div class="slds-truncate"><lightning-output-field field-name="Name"></lightning-output-field></div></td>
+        <td><div class="slds-truncate"><lightning-output-field field-name="Booking__c"></lightning-output-field></div></td>
+        <td><div class="slds-truncate"><lightning-output-field field-name="Account_Name__c"></lightning-output-field></div></td>
+       <td><div class="slds-truncate"><lightning-output-field field-name="Mode_of_Payment__c"></lightning-output-field></div></td> 
+       <td><div class="slds-truncate"><lightning-output-field field-name="Payment_Received__c"></lightning-output-field></div></td>
+       <td><div class="slds-truncate"><lightning-output-field field-name="Amount__c"></lightning-output-field></div></td>
+
+       <td if:true={conversionData}>
+             <div class="backgroundInverse">
+          <lightning-button
+          label="Click to view Converted Amount" 
+           icon-name="utility:chart" onclick={convert} value={x}>
+         </lightning-button>
+       
+       </div></td>
+      <td> <lightning-button-menu alternative-text="Show menu">
+        <lightning-menu-item  label="Edit" onclick={edit} value={x}></lightning-menu-item>
+        <lightning-menu-item value={x} label="Delete" onclick={del}></lightning-menu-item>
+    </lightning-button-menu>  </td>
+       </tr>                                        
+              </table>
+              </div> 
+              </lightning-record-view-form>
+              
+          </template>  </lightning-card>
+          
+            <lightning-card title="Realtime Currency Exchange Rate" icon-name="standard:currency">
+        
+                <lightning-layout multiple-rows="true" vertical-align="end">
+                <lightning-layout-item size="12" small-device-size="4" medium-device-size="2" large-device-size="2" padding="around-small">
+                        <div class="slds-form-element">
+                                <div class="slds-form-element__control">
+                                        <lightning-combobox title="Select Currency" 
+                                                            label="From Base Currency"
+                                                            value={fromCurrencyValue}
+                                                            options={options}
+                                                            onchange={handleFromCurrencyChange}></lightning-combobox>
+                                </div>
+                            </div> 
+                    </lightning-layout-item>
+        
+                    <lightning-layout-item size="12" small-device-size="4" medium-device-size="2" large-device-size="2" padding="around-small">
+                            <div class="slds-form-element">
+                                    <div class="slds-form-element__control">
+                                            <lightning-combobox title="Select Currency" 
+                                                                label="To Currency"
+                                                                value={toCurrencyValue}
+                                                                placeholder="-Select-"
+                                                                options={toCurrencyOptions}
+                                                                onchange={handleToCurrencyChange}></lightning-combobox>
+                                    </div>
+                                </div> 
+                    </lightning-layout-item>
+                    <lightning-layout-item size="12" small-device-size="2" medium-device-size="2" large-device-size="2" padding="around-small">
+                            <lightning-button title="Currency Conversion" 
+                                              label="Conversion Rate" 
+                                              variant="brand" 
+                                              onclick={handleCurrencyConversion}></lightning-button>
+                        </lightning-layout-item>
+                    </lightning-layout><br/>
+        
+                    <template if:true={conversionData}>    
+                        <div class="slds-p-around_medium" id="modal-content-id-1">
+                                <div style="font-size: 20px"><h1>Exchange rate from Currency <b>{fromCurrencyValue}</b> to <b>{toCurrencyValue}</b> </h1></div><br/>
+                                <dl class="slds-list_horizontal slds-wrap">
+                                    <dt class="slds-item_label slds-truncate" title="From Currency Name">From Currency Name</dt>
+                                    <dd class="slds-item_detail slds-truncate"><b>: {conversionData.From_Currency_Name}</b></dd>
+                                    <dt class="slds-item_label slds-truncate" title="From Currency Code">From Currency Code</dt>
+                                    <dd class="slds-item_detail slds-truncate"><b>: {conversionData.From_Currency_Code}</b></dd>
+                                    <dt class="slds-item_label slds-truncate" title="To Currency Name">To Currency Name</dt>
+                                    <dd class="slds-item_detail slds-truncate"><b>: {conversionData.To_Currency_Name}</b></dd>
+                                    <dt class="slds-item_label slds-truncate" title="To Currency Code">To Currency Code</dt>
+                                    <dd class="slds-item_detail slds-truncate"><b>: {conversionData.To_Currency_Code}</b></dd>
+                                    <dt class="slds-item_label slds-truncate" title="Exchange Rate">Exchange Rate</dt>
+                                    <dd class="slds-item_detail slds-truncate">: <b style="color:red;">{conversionData.Exchange_Rate}</b></dd>
+                                    <dt class="slds-item_label slds-truncate" title="Last Refershed">Last Refereshed</dt>
+                                    <dd class="slds-item_detail slds-truncate"><b>: {conversionData.Last_Refershed}</b></dd>
+                                </dl>
+                        </div>
+                    </template>
+            </lightning-card>
+        </template>
+    
+</template>
